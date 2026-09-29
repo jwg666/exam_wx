@@ -1,0 +1,260 @@
+/* ============================================================
+   题海拾贝 · 全局设计系统（暗色主题）
+   与 Web 版配色一致：底 #0B1120 / 卡片 #162032 / 强调 #14B8A6
+   ============================================================ */
+page {
+  --bg: #0B1120;
+  --card: #162032;
+  --card2: #1C2942;
+  --border: #243049;
+  --text: #E8EDF5;
+  --text2: #94A3B8;
+  --muted: #64748B;
+  --teal: #14B8A6;
+  --teal-d: #0D9488;
+  --blue: #3B82F6;
+  --purple: #8B5CF6;
+  --orange: #F97316;
+  --amber: #F59E0B;
+  --green: #10B981;
+  --red: #EF4444;
+
+  background: #0B1120;
+  color: #E8EDF5;
+  font-size: 28rpx;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+}
+
+/* ---------- 小程序 button 样式重置 ---------- */
+button {
+  background: none;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  color: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+button::after { border: none; }
+
+/* ---------- 布局工具 ---------- */
+.page { min-height: 100vh; box-sizing: border-box; }
+.row { display: flex; flex-direction: row; align-items: center; }
+.col { display: flex; flex-direction: column; }
+.grow { flex: 1; min-width: 0; }
+.between { justify-content: space-between; }
+.center { justify-content: center; }
+.wrap { flex-wrap: wrap; }
+.gap-1 { gap: 8rpx; }
+.gap-2 { gap: 16rpx; }
+.gap-3 { gap: 24rpx; }
+.gap-4 { gap: 32rpx; }
+.safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+
+/* ---------- 间距 ---------- */
+.mt-1 { margin-top: 8rpx; }
+.mt-2 { margin-top: 16rpx; }
+.mt-3 { margin-top: 24rpx; }
+.mt-4 { margin-top: 32rpx; }
+.mt-5 { margin-top: 40rpx; }
+.mb-1 { margin-bottom: 8rpx; }
+.mb-2 { margin-bottom: 16rpx; }
+.mb-3 { margin-bottom: 24rpx; }
+.mb-4 { margin-bottom: 32rpx; }
+.mb-5 { margin-bottom: 40rpx; }
+.p-3 { padding: 24rpx; }
+.p-4 { padding: 32rpx; }
+.p-5 { padding: 40rpx; }
+.px-4 { padding-left: 32rpx; padding-right: 32rpx; }
+.px-5 { padding-left: 40rpx; padding-right: 40rpx; }
+
+/* ---------- 文本 ---------- */
+.t-xs { font-size: 20rpx; }
+.t-sm { font-size: 24rpx; }
+.t-md { font-size: 28rpx; }
+.t-lg { font-size: 32rpx; }
+.t-xl { font-size: 40rpx; }
+.t-2xl { font-size: 48rpx; }
+.t-bold { font-weight: 600; }
+.t-black { font-weight: 800; }
+.t-center { text-align: center; }
+.c-teal { color: #14B8A6; }
+.c-blue { color: #3B82F6; }
+.c-purple { color: #8B5CF6; }
+.c-orange { color: #F97316; }
+.c-amber { color: #F59E0B; }
+.c-green { color: #10B981; }
+.c-red { color: #EF4444; }
+.c-pink { color: #EC4899; }
+.c-sub { color: #94A3B8; }
+.c-muted { color: #64748B; }
+
+/* ---------- 卡片 / 标签 / 输入框 ---------- */
+.g-card {
+  background: #162032;
+  border: 1rpx solid #243049;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  box-sizing: border-box;
+}
+.g-card-2 { background: #1C2942; }
+.g-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 6rpx 20rpx;
+  border-radius: 999rpx;
+  font-size: 22rpx;
+  font-weight: 600;
+  line-height: 1.6;
+}
+.g-input {
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(11, 17, 32, 0.5);
+  border: 1rpx solid #243049;
+  border-radius: 16rpx;
+  padding: 20rpx 28rpx;
+  color: #E8EDF5;
+  font-size: 28rpx;
+}
+.g-ph { color: #64748B; }
+
+/* ---------- 按钮 ---------- */
+.g-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20rpx 32rpx;
+  border-radius: 20rpx;
+  font-weight: 700;
+  font-size: 30rpx;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+.g-btn-primary {
+  background: linear-gradient(135deg, #14B8A6, #0D9488);
+  color: #FFFFFF;
+  box-shadow: 0 8rpx 25rpx rgba(13, 148, 136, 0.4);
+}
+.g-btn-ghost {
+  background: #162032;
+  border: 1rpx solid #243049;
+  color: #E8EDF5;
+}
+.g-btn-danger {
+  background: linear-gradient(135deg, #F43F5E, #DC2626);
+  color: #FFFFFF;
+  box-shadow: 0 8rpx 25rpx rgba(220, 38, 38, 0.3);
+}
+.g-btn-disabled { opacity: 0.5; }
+
+/* ---------- 页头 ---------- */
+.page-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: rgba(11, 17, 32, 0.95);
+  padding: 24rpx 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.section-title {
+  font-size: 30rpx;
+  font-weight: 800;
+  color: #E8EDF5;
+}
+
+/* ---------- 底部弹层 ---------- */
+.modal-overlay {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+}
+.sheet {
+  width: 100%;
+  background: #162032;
+  border-radius: 32rpx 32rpx 0 0;
+  padding: 40rpx 32rpx;
+  padding-bottom: calc(40rpx + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.sheet-grip {
+  width: 96rpx;
+  height: 12rpx;
+  background: #243049;
+  border-radius: 999rpx;
+  margin: 0 auto 32rpx;
+}
+
+/* ---------- 进度条 ---------- */
+.progress-bar {
+  height: 16rpx;
+  background: #0B1120;
+  border-radius: 999rpx;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #0D9488, #14B8A6, #3B82F6);
+  border-radius: 999rpx;
+  transition: width 0.4s ease;
+}
+
+/* ---------- 空状态 ---------- */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 40rpx;
+  color: #64748B;
+  font-size: 26rpx;
+}
+.empty-emoji {
+  font-size: 88rpx;
+  margin-bottom: 24rpx;
+}
+
+/* ---------- 头像 ---------- */
+.avatar {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 50%;
+  background: #1C2942;
+}
+.avatar-fallback {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #14B8A6, #0D9488);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+  font-weight: 800;
+}
+
+/* ---------- 动画 ---------- */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24rpx); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp 0.45s ease both; }
+
+/* ---------- 分割线 ---------- */
+.divider {
+  height: 1rpx;
+  background: #243049;
+  margin: 24rpx 0;
+}

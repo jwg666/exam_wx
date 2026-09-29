@@ -1,0 +1,146 @@
+/* 题库管理页私有样式（公共样式复用 app.wxss） */
+
+/* ---------- 头部 ---------- */
+.header-emoji { font-size: 40rpx; }
+.header-btn { font-size: 26rpx; font-weight: 700; color: #94A3B8; }
+.header-btn-primary { color: #14B8A6; }
+
+/* ---------- 加载态 ---------- */
+.loading-box { display: flex; justify-content: center; padding: 160rpx 0; }
+.spinner {
+  width: 56rpx;
+  height: 56rpx;
+  border: 6rpx solid #243049;
+  border-top-color: #14B8A6;
+  border-radius: 50%;
+  animation: adm-spin 0.8s linear infinite;
+}
+@keyframes adm-spin { to { transform: rotate(360deg); } }
+
+/* ---------- 题库列表 ---------- */
+.bank-list { padding: 24rpx 40rpx 120rpx; display: flex; flex-direction: column; gap: 24rpx; }
+.bank-card { display: flex; align-items: center; gap: 20rpx; padding: 28rpx; }
+.bank-icon {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 44rpx;
+  flex-shrink: 0;
+}
+.bank-name { font-size: 30rpx; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bank-meta { margin-top: 6rpx; font-size: 22rpx; color: #64748B; }
+.kind-quiz { background: rgba(20, 184, 166, 0.15); color: #14B8A6; flex-shrink: 0; }
+.kind-assess { background: rgba(139, 92, 246, 0.15); color: #8B5CF6; flex-shrink: 0; }
+.icon-btn {
+  width: 68rpx;
+  height: 68rpx;
+  border-radius: 16rpx;
+  background: #0B1120;
+  border: 1rpx solid #243049;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  flex-shrink: 0;
+}
+.icon-btn-sm { width: 64rpx; height: 64rpx; font-size: 26rpx; }
+
+/* ---------- 表单弹层公共 ---------- */
+.fit { width: auto; flex: 1; min-width: 0; }
+.input-sm { padding: 14rpx 20rpx; font-size: 24rpx; }
+.w-sort { width: 150rpx; flex: none; }
+.picker-item { min-width: 0; }
+.picker-view { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.form-textarea { width: 100%; min-height: 130rpx; box-sizing: border-box; }
+
+/* ---------- 题目管理弹层 ---------- */
+.manage-title {
+  font-size: 32rpx;
+  font-weight: 800;
+  max-width: 430rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.add-q-btn { color: #14B8A6; font-size: 28rpx; font-weight: 700; padding: 8rpx 0 8rpx 24rpx; flex-shrink: 0; }
+.q-list { display: flex; flex-direction: column; gap: 16rpx; }
+.q-row {
+  background: rgba(11, 17, 32, 0.6);
+  border: 1rpx solid #243049;
+  border-radius: 20rpx;
+  padding: 24rpx;
+  display: flex;
+  align-items: flex-start;
+  gap: 16rpx;
+}
+.q-idx { font-size: 22rpx; color: #64748B; font-weight: 700; width: 40rpx; flex-shrink: 0; padding-top: 6rpx; }
+.q-text {
+  font-size: 26rpx;
+  font-weight: 500;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.empty-sm { padding: 60rpx 20rpx; }
+
+/* ---------- 题目表单 ---------- */
+.type-tag {
+  padding: 10rpx 28rpx;
+  border-radius: 999rpx;
+  font-size: 24rpx;
+  font-weight: 600;
+  background: #162032;
+  color: #94A3B8;
+  border: 1rpx solid #243049;
+}
+.type-tag.on { background: #14B8A6; color: #FFFFFF; border-color: #14B8A6; }
+.ans-letter {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 16rpx;
+  background: #162032;
+  border: 1rpx solid #243049;
+  color: #64748B;
+  font-size: 26rpx;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+.ans-letter.on { background: #14B8A6; border-color: #14B8A6; color: #FFFFFF; }
+
+/* ---------- 分类管理弹层 ---------- */
+.cat-list { display: flex; flex-direction: column; gap: 16rpx; }
+.cat-card {
+  background: rgba(11, 17, 32, 0.6);
+  border: 1rpx solid #243049;
+  border-radius: 20rpx;
+  padding: 20rpx 24rpx;
+}
+.cat-code {
+  font-size: 20rpx;
+  color: #64748B;
+  font-family: monospace;
+  width: 130rpx;
+  flex-shrink: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cat-save {
+  background: linear-gradient(135deg, #14B8A6, #0D9488);
+  color: #FFFFFF;
+  font-size: 22rpx;
+  font-weight: 700;
+  border-radius: 12rpx;
+  padding: 12rpx 24rpx;
+  flex-shrink: 0;
+}
+.cat-save-lg { padding: 16rpx 40rpx; font-size: 26rpx; }

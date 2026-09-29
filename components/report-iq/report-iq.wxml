@@ -1,0 +1,42 @@
+<view class="rp" wx:if="{{report}}">
+  <view class="g-card rp-main">
+    <view class="row between mb-4">
+      <view>
+        <view class="t-xl t-black" style="color: {{report.tierColor}};">{{report.tier}}</view>
+        <view class="t-xs c-sub mt-1">{{report.percentile}}</view>
+      </view>
+      <text class="rp-brain" style="color: {{report.tierColor}};">🧠</text>
+    </view>
+
+    <view class="t-xs t-bold c-sub mb-2">📊 能力维度分析</view>
+    <view class="mb-4">
+      <view class="rp-cat" wx:for="{{report.byCat}}" wx:key="cat">
+        <view class="row between t-xs t-bold mb-1">
+          <text>{{item.cat}}</text>
+          <text class="{{item.pct >= 80 ? 'c-green' : item.pct >= 50 ? 'c-blue' : 'c-orange'}}">
+            {{item.correct}}/{{item.total}} · {{item.pct}}%
+          </text>
+        </view>
+        <view class="progress-bar">
+          <view class="progress-fill" style="width: {{item.pct}}%;"></view>
+        </view>
+      </view>
+    </view>
+
+    <view class="row gap-2">
+      <view class="grow rp-cell">
+        <view class="t-xs t-bold c-green mb-1">🏆 最强维度</view>
+        <view class="t-xs c-sub">{{report.bestCat}}</view>
+      </view>
+      <view class="grow rp-cell">
+        <view class="t-xs t-bold c-orange mb-1">💪 可提升</view>
+        <view class="t-xs c-sub">{{report.worstCat}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="g-card rp-note">
+    <text class="c-teal">ℹ️ </text>
+    <text class="grow">本测试为娱乐与自我认知参考，不构成临床或专业鉴定。分数受状态、环境与题目熟悉度影响，建议休息充分后多次测试取参考。</text>
+  </view>
+</view>

@@ -1,0 +1,101 @@
+<view class="page stats-page">
+
+  <!-- 未登录空态（登录守卫触发） -->
+  <view wx:if="{{guest}}" class="empty">
+    <text class="empty-emoji">🔐</text>
+    <text>登录后查看学习报告</text>
+  </view>
+
+  <block wx:else>
+    <!-- 加载中 -->
+    <view wx:if="{{loading}}" class="loading-wrap">
+      <view class="spinner"></view>
+    </view>
+
+    <block wx:else>
+      <!-- 核心指标 -->
+      <view class="stats-grid mb-5 fade-up">
+        <view class="g-card metric">
+          <text class="metric-wm">🎯</text>
+          <view class="metric-label">
+            <view class="metric-dot metric-dot-teal"></view>
+            <text>正确率</text>
+          </view>
+          <view>
+            <text class="metric-num metric-num-acc">{{accuracy}}</text>
+            <text class="metric-unit">%</text>
+          </view>
+        </view>
+
+        <view class="g-card metric">
+          <text class="metric-wm">🔥</text>
+          <view class="metric-label">
+            <view class="metric-dot metric-dot-orange"></view>
+            <text>连续打卡</text>
+          </view>
+          <view>
+            <text class="metric-num metric-num-streak">{{streak}}</text>
+            <text class="metric-unit">天</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 近7天学习趋势 -->
+      <view class="g-card stats-card stats-card-mb fade-up sec-2">
+        <view class="stats-head">
+          <text class="stats-icon">📈</text>
+          <text class="stats-title">近7天学习趋势</text>
+        </view>
+        <view class="chart-area">
+          <view class="chart-col" wx:for="{{weekView}}" wx:key="date">
+            <text class="chart-val">{{item.total}}</text>
+            <view class="chart-bar" style="height: {{item.hpct}}%;"></view>
+          </view>
+        </view>
+        <view class="chart-labels">
+          <text class="chart-day" wx:for="{{weekView}}" wx:key="date">{{item.day}}</text>
+        </view>
+      </view>
+
+      <!-- 各科目正确率 -->
+      <view class="g-card stats-card stats-card-mb fade-up sec-3">
+        <view class="stats-head">
+          <text class="stats-icon">📚</text>
+          <text class="stats-title">各科目正确率</text>
+        </view>
+        <text wx:if="{{byTypeView.length === 0}}" class="stats-empty">暂无答题数据</text>
+        <view wx:else class="col gap-4">
+          <view wx:for="{{byTypeView}}" wx:key="type">
+            <view class="row between bytype-head">
+              <text class="t-xs t-bold">{{item.typeName}}</text>
+              <text class="t-xs t-bold c-teal">{{item.accuracy}}%</text>
+            </view>
+            <view class="progress-bar">
+              <view class="progress-fill" style="width: {{item.accuracy}}%;"></view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 答题时段分布 -->
+      <view class="g-card stats-card fade-up sec-4">
+        <view class="stats-head">
+          <text class="stats-icon">⏰</text>
+          <text class="stats-title">答题时段分布</text>
+        </view>
+        <text wx:if="{{distEmpty}}" class="stats-empty">暂无答题数据</text>
+        <view wx:else class="col gap-4">
+          <view wx:for="{{distView}}" wx:key="key">
+            <view class="row between bytype-head">
+              <text class="t-xs t-bold">{{item.emoji}} {{item.name}}</text>
+              <text class="t-xs t-bold" style="color: {{item.color}};">{{item.pct}}%</text>
+            </view>
+            <view class="progress-bar">
+              <view class="progress-fill" style="{{item.style}}"></view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+  </block>
+</view>

@@ -1,0 +1,6 @@
+{
+  "name": "exam-wx",
+  "private": true,
+  "description": "题海拾贝 · 原生微信小程序（CommonJS，无 npm 依赖）",
+  "type": "commonjs"
+}

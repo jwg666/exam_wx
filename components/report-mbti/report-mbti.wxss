@@ -1,0 +1,57 @@
+.rp { width: 100%; }
+.rp-main { box-shadow: 0 8rpx 40rpx rgba(0, 0, 0, 0.25); }
+.rp-logo {
+  width: 112rpx;
+  height: 112rpx;
+  border-radius: 32rpx;
+  background: linear-gradient(135deg, #8B5CF6, #6366F1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56rpx;
+  box-shadow: 0 8rpx 30rpx rgba(139, 92, 246, 0.35);
+}
+.rp-code { color: #94A3B8; font-size: 28rpx; font-family: monospace; }
+
+.rp-dim { margin-bottom: 20rpx; }
+.rp-dim:last-child { margin-bottom: 0; }
+.rp-dim-track {
+  display: flex;
+  height: 16rpx;
+  border-radius: 999rpx;
+  overflow: hidden;
+  background: #0B1120;
+}
+.rp-dim-left {
+  background: linear-gradient(90deg, #0D9488, #14B8A6);
+}
+.rp-dim-right {
+  flex: 1;
+  background: linear-gradient(90deg, #3B82F6, #60A5FA);
+}
+
+.rp-trait {
+  background: rgba(139, 92, 246, 0.2);
+  color: #C4B5FD;
+  font-size: 22rpx;
+  padding: 8rpx 20rpx;
+  border-radius: 999rpx;
+}
+
+.rp-li {
+  display: flex;
+  gap: 8rpx;
+  color: #94A3B8;
+  font-size: 24rpx;
+  line-height: 1.7;
+  margin-top: 6rpx;
+}
+
+.rp-note {
+  margin-top: 24rpx;
+  font-size: 24rpx;
+  color: #64748B;
+  line-height: 1.7;
+  display: flex;
+  gap: 8rpx;
+}

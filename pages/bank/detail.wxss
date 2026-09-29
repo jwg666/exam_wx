@@ -1,0 +1,168 @@
+/* 题库详情页：对齐 Web 版 pages/bank/[id].vue */
+
+.detail-page {
+  padding-bottom: 96rpx;
+}
+
+/* ---------- 顶部封面 ---------- */
+.cover {
+  height: 400rpx;
+  box-sizing: border-box;
+  border-radius: 0 0 64rpx 64rpx;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  padding: 0 48rpx 48rpx;
+  box-shadow: 0 20rpx 80rpx rgba(0, 0, 0, 0.5);
+}
+.cover-head {
+  align-items: flex-end;
+}
+.cover-ico {
+  width: 128rpx;
+  height: 128rpx;
+  border-radius: 32rpx;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2rpx solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 60rpx;
+  flex-shrink: 0;
+  box-shadow: 0 16rpx 40rpx rgba(0, 0, 0, 0.35);
+}
+.cover-title-box {
+  align-items: flex-start;
+  min-width: 0;
+}
+.cover-name {
+  font-size: 56rpx;
+  font-weight: 800;
+  color: #FFFFFF;
+  text-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.45);
+}
+.cover-tags {
+  font-size: 24rpx;
+  color: rgba(232, 237, 245, 0.85);
+  margin-top: 8rpx;
+}
+
+/* ---------- 详细信息 ---------- */
+.detail-body {
+  padding: 0 40rpx;
+  margin-top: -8rpx;
+  position: relative;
+  z-index: 30;
+}
+.info-card {
+  box-shadow: 0 20rpx 80rpx rgba(0, 0, 0, 0.4);
+}
+.bank-desc-text {
+  font-size: 28rpx;
+  color: #94A3B8;
+  line-height: 1.7;
+}
+.prog-title {
+  margin: 32rpx 0 8rpx;
+}
+.prog-bar {
+  margin-bottom: 16rpx;
+}
+
+/* ---------- 数据面板 ---------- */
+.stats-row {
+  margin-top: 24rpx;
+}
+.stat-box {
+  flex: 1;
+  background: #162032;
+  border: 1rpx solid #243049;
+  border-radius: 24rpx;
+  padding: 24rpx 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.stat-num {
+  font-size: 40rpx;
+  font-weight: 800;
+  color: #E8EDF5;
+}
+.stat-label {
+  font-size: 22rpx;
+  color: #64748B;
+  margin-top: 4rpx;
+}
+
+/* ---------- 刷题入口 ---------- */
+.action-btn {
+  flex: 1;
+  font-size: 26rpx;
+  padding: 20rpx 8rpx;
+}
+.assess-btn {
+  width: 100%;
+  padding: 32rpx 0;
+  font-size: 32rpx;
+  box-shadow: 0 16rpx 50rpx rgba(139, 92, 246, 0.4);
+}
+.assess-hint {
+  display: block;
+  text-align: center;
+  font-size: 24rpx;
+  color: #64748B;
+  margin-top: 24rpx;
+}
+.btn-hover { opacity: 0.85; }
+
+/* ---------- 题目目录 ---------- */
+.list-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #E8EDF5;
+}
+.q-list {
+  margin-top: 24rpx;
+}
+.q-item {
+  padding: 24rpx;
+  margin-bottom: 24rpx;
+}
+.q-item-done { opacity: 0.7; }
+.q-item-hover { border-color: rgba(13, 148, 136, 0.5); }
+.q-no {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 16rpx;
+  background: #1C2942;
+  color: #64748B;
+  font-size: 24rpx;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.q-no-done {
+  background: #0D9488;
+  color: #FFFFFF;
+}
+.q-text {
+  margin: 0 20rpx;
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #E8EDF5;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.q-done-mark {
+  font-size: 28rpx;
+  flex-shrink: 0;
+}
+
+/* ---------- 游客空态 ---------- */
+.guest-login-btn {
+  margin-top: 32rpx;
+  padding: 16rpx 64rpx;
+}

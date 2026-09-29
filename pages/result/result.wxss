@@ -1,0 +1,138 @@
+/* 结算页样式：对齐 Web 版 pages/result.vue（环形进度改为 canvas 2d 实现） */
+.result-page { min-height: 100vh; }
+
+/* ---------- 头部区域（顶部 teal 渐变 + 装饰圆环） ---------- */
+.result-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 96rpx 40rpx 0;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(19, 78, 74, 0.35), rgba(11, 17, 32, 0) 70%);
+}
+.deco {
+  position: absolute;
+  left: 50%;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+.deco-a {
+  top: 160rpx;
+  width: 512rpx;
+  height: 512rpx;
+  margin-left: -256rpx;
+  border: 1rpx solid rgba(20, 184, 166, 0.2);
+}
+.deco-b {
+  top: 96rpx;
+  width: 640rpx;
+  height: 640rpx;
+  margin-left: -320rpx;
+  border: 1rpx solid rgba(59, 130, 246, 0.1);
+}
+.result-title {
+  display: block;
+  position: relative;
+  z-index: 10;
+  font-size: 48rpx;
+  font-weight: 900;
+  color: #E8EDF5;
+}
+.result-sub {
+  display: block;
+  position: relative;
+  z-index: 10;
+  margin-top: 16rpx;
+  margin-bottom: 80rpx;
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #94A3B8;
+}
+
+/* ---------- 环形进度（canvas 2d + 中央文字） ---------- */
+.ring-box {
+  position: relative;
+  width: 384rpx;
+  height: 384rpx;
+  margin: 0 auto 48rpx;
+  z-index: 10;
+}
+.ring-canvas { width: 384rpx; height: 384rpx; }
+.ring-center {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.ring-num {
+  font-size: 96rpx;
+  font-weight: 900;
+  line-height: 1.1;
+  color: #2DD4BF; /* 兜底色：不支持 background-clip:text 时仍可见 */
+  background: linear-gradient(135deg, #5EEAD4, #3B82F6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.ring-num-small { font-size: 60rpx; letter-spacing: 8rpx; }
+.ring-label {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  font-weight: 700;
+  color: #64748B;
+  letter-spacing: 4rpx;
+}
+
+/* ---------- 评语 ---------- */
+.result-comment {
+  display: block;
+  position: relative;
+  z-index: 10;
+  margin: 0 auto 64rpx;
+  padding: 0 32rpx;
+  font-size: 26rpx;
+  color: #94A3B8;
+  line-height: 1.7;
+}
+
+/* ---------- 统计卡 ---------- */
+.result-stats {
+  display: flex;
+  gap: 24rpx;
+  margin-bottom: 80rpx;
+  position: relative;
+  z-index: 10;
+}
+.stat-card {
+  flex: 1;
+  min-width: 0;
+  background: rgba(22, 32, 50, 0.85);
+  border: 1rpx solid rgba(255, 255, 255, 0.05);
+  border-radius: 24rpx;
+  padding: 32rpx 24rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.stat-label { font-size: 22rpx; color: #94A3B8; font-weight: 500; margin-bottom: 16rpx; }
+.stat-value { font-size: 48rpx; font-weight: 700; }
+.stat-value-time { font-size: 26rpx; font-weight: 700; margin-top: 12rpx; }
+
+/* ---------- 报告组件容器 ---------- */
+.result-report { position: relative; z-index: 10; padding: 0 40rpx; }
+
+/* ---------- 底部按钮 ---------- */
+.result-btns {
+  display: flex;
+  gap: 32rpx;
+  position: relative;
+  z-index: 10;
+  padding: 0 40rpx;
+  margin-top: 64rpx;
+  padding-bottom: calc(48rpx + env(safe-area-inset-bottom));
+}
+.btn-ic { margin-left: 8rpx; font-size: 26rpx; }

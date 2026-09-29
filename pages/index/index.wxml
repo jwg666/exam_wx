@@ -1,0 +1,100 @@
+<view class="page">
+  <!-- 页头：logo + 标题 + 游客登录入口 -->
+  <view class="page-header">
+    <view class="row gap-2">
+      <view class="logo-badge">🌊</view>
+      <text class="page-title">题海拾贝</text>
+    </view>
+    <button wx:if="{{!loggedIn}}" class="g-btn g-btn-primary login-btn" hover-class="btn-hover" bindtap="goLogin">登录 / 注册</button>
+  </view>
+
+  <!-- 游客提示 -->
+  <view wx:if="{{!loggedIn}}" class="hint-row">
+    <text class="t-xs c-muted">浏览题库无需登录，开始刷题后自动生成学习记录</text>
+  </view>
+
+  <!-- 搜索栏（本地过滤名称/描述） -->
+  <view class="search-row">
+    <view class="search-box">
+      <text class="search-ico">🔍</text>
+      <input
+        class="search-input"
+        value="{{query}}"
+        placeholder="搜索题库..."
+        placeholder-class="g-ph"
+        confirm-type="search"
+        bindinput="onSearchInput"
+      />
+    </view>
+  </view>
+
+  <!-- 分类筛选：每行 4 个大按钮 -->
+  <view class="cat-grid">
+    <view wx:for="{{categories}}" wx:key="code" class="cat-cell">
+      <view
+        class="cat-tag {{currentCat === item.code ? 'cat-tag-active' : ''}}"
+        hover-class="cat-tag-hover"
+        data-code="{{item.code}}"
+        bindtap="onCatTap"
+      >
+        <text class="cat-txt">{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载态 -->
+  <view wx:if="{{loading}}" class="empty">
+    <text class="empty-emoji">🌊</text>
+    <text>正在加载题库...</text>
+  </view>
+
+  <!-- 加载失败（点击重试） -->
+  <view wx:elif="{{loadError}}" class="empty" bindtap="onRetry">
+    <text class="empty-emoji">📡</text>
+    <text>{{loadError}}</text>
+    <text class="retry-link">点击重试</text>
+  </view>
+
+  <!-- 空态：搜索无结果 / 无题库 -->
+  <view wx:elif="{{filtered.length === 0}}" class="empty">
+    <text class="empty-emoji">🔍</text>
+    <text>未找到相关题库</text>
+  </view>
+
+  <!-- 题库卡片列表 -->
+  <view wx:else class="bank-list">
+    <view
+      wx:for="{{filtered}}"
+      wx:key="id"
+      class="g-card bank-card fade-up"
+      style="animation-delay:{{item.delay}}s"
+      hover-class="bank-card-hover"
+      data-id="{{item.id}}"
+      bindtap="openBank"
+    >
+      <view class="row bank-top">
+        <view class="bank-ico" style="{{item.iconStyle}}">{{item.emoji}}</view>
+        <view class="grow bank-info">
+          <view class="row between">
+            <text class="bank-name">{{item.name}}</text>
+            <text wx:if="{{item.completed}}" class="done-mark">✅</text>
+          </view>
+          <text class="bank-desc">{{item.desc}}</text>
+          <view class="row wrap gap-1 bank-tags">
+            <text class="g-tag {{item.typeClass}}">{{item.typeName}}</text>
+            <text class="g-tag tag-dark">▦ {{item.total}}题</text>
+            <text class="g-tag tag-dark {{item.diffClass}}">🔥 {{item.difficulty}}</text>
+          </view>
+          <!-- 完成进度（仅登录用户展示） -->
+          <view wx:if="{{loggedIn}}" class="row gap-2 prog-row">
+            <view class="progress-bar grow">
+              <view class="progress-fill" style="width:{{item.pct}}%"></view>
+            </view>
+            <text class="prog-pct">{{item.pct}}%</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="safe-bottom"></view>
+  </view>
+</view>

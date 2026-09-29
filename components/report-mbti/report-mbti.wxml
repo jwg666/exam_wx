@@ -1,0 +1,57 @@
+<view class="rp" wx:if="{{report}}">
+  <view class="g-card rp-main">
+    <view class="row gap-3 mb-4">
+      <view class="rp-logo">🎭</view>
+      <view class="grow">
+        <view class="t-xl t-black">{{report.typeName}} <text class="rp-code">{{report.typeCode}}</text></view>
+        <view class="t-xs c-sub mt-1">{{report.tagline}}</view>
+      </view>
+    </view>
+
+    <view class="mb-4">
+      <view class="rp-dim" wx:for="{{report.dims}}" wx:key="dim">
+        <view class="row between t-xs t-bold mb-1">
+          <text class="c-teal">{{item.left}} {{item.leftPct}}%</text>
+          <text class="c-muted">{{item.label}}</text>
+          <text class="c-blue">{{item.rightPct}}% {{item.right}}</text>
+        </view>
+        <view class="rp-dim-track">
+          <view class="rp-dim-left" style="width: {{item.leftPct}}%;"></view>
+          <view class="rp-dim-right"></view>
+        </view>
+      </view>
+    </view>
+
+    <view class="row wrap gap-2 mb-4">
+      <text class="rp-trait" wx:for="{{report.traits}}" wx:key="*this">{{item}}</text>
+    </view>
+
+    <view class="mb-4">
+      <view class="t-xs t-bold c-green mb-1">👍 优势</view>
+      <view class="rp-li" wx:for="{{report.strengths}}" wx:key="*this">
+        <text class="c-green">· </text><text class="grow">{{item}}</text>
+      </view>
+    </view>
+
+    <view class="mb-4">
+      <view class="t-xs t-bold c-orange mb-1">⚠️ 盲点</view>
+      <view class="rp-li" wx:for="{{report.weaknesses}}" wx:key="*this">
+        <text class="c-orange">· </text><text class="grow">{{item}}</text>
+      </view>
+    </view>
+
+    <view class="mb-2">
+      <view class="t-xs t-bold c-blue mb-1">💼 适合的发展方向</view>
+      <view class="t-xs c-sub">{{careersLabel}}</view>
+    </view>
+
+    <view>
+      <view class="t-xs t-bold c-pink mb-1">❤️ 高契合类型</view>
+      <view class="t-xs c-sub">{{compatibleLabel}}</view>
+    </view>
+  </view>
+
+  <view class="g-card rp-note">
+    <text class="c-teal">ℹ️ </text><text class="grow">{{report.note}}</text>
+  </view>
+</view>

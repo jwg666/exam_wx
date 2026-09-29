@@ -1,0 +1,128 @@
+<view class="page results-page">
+
+  <!-- 未登录空态（登录守卫触发） -->
+  <view wx:if="{{guest}}" class="empty">
+    <text class="empty-emoji">🔐</text>
+    <text>登录后查看你的学习成果</text>
+  </view>
+
+  <block wx:else>
+    <!-- 加载中 -->
+    <view wx:if="{{loading}}" class="loading-wrap">
+      <view class="spinner"></view>
+    </view>
+
+    <block wx:else>
+      <!-- 测评报告 -->
+      <view class="section fade-up">
+        <view class="row between mb-4">
+          <text class="section-title">测评报告</text>
+          <text class="t-sm c-muted">{{reports.length}} 份</text>
+        </view>
+
+        <view wx:if="{{reports.length === 0}}" class="g-card rep-empty">
+          <view class="rep-empty-icon"><text>🏅</text></view>
+          <text class="rep-empty-title">还没有测评报告</text>
+          <text class="rep-empty-sub">完成 16 型人格或智商测试后，报告会保存在这里</text>
+          <view class="g-btn g-btn-primary rep-empty-btn" bindtap="goAssess">去测评 ›</view>
+        </view>
+
+        <view wx:else class="col gap-3">
+          <view
+            class="g-card rep-card"
+            wx:for="{{reports}}"
+            wx:key="id"
+            bindtap="onToggleReport"
+            data-id="{{item.id}}"
+          >
+            <view class="row gap-3">
+              <view class="rep-icon" style="background: {{item.iconBg}};">
+                <text class="rep-icon-emoji">{{item.emoji}}</text>
+              </view>
+              <view class="grow rep-meta">
+                <text class="rep-name">{{item.bankName}}</text>
+                <text class="rep-date">{{item.date}} 完成</text>
+              </view>
+              <view class="col rep-key">
+                <text class="rep-num {{item.kind === 'mbti' ? 'c-purple' : ''}}" style="{{item.keyStyle}}">{{item.keyResult}}</text>
+                <text class="rep-key-label">{{item.keyLabel}}</text>
+              </view>
+              <text class="rep-chev {{expandedId === item.id ? 'rep-chev-open' : ''}}">▾</text>
+            </view>
+
+            <view wx:if="{{expandedId === item.id}}" class="rep-detail" catchtap="noop">
+              <report-mbti wx:if="{{item.kind === 'mbti'}}" report="{{item.report}}" />
+              <report-iq wx:elif="{{item.kind === 'iq'}}" report="{{item.report}}" />
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 最近学习 -->
+      <view class="section sec-2 fade-up">
+        <view class="row between mb-4">
+          <text class="section-title">最近学习</text>
+          <text class="t-sm c-muted" bindtap="goAssess">查看全部 ›</text>
+        </view>
+
+        <view wx:if="{{hotBanks.length === 0}}" class="g-card hot-empty">
+          <text>还没有学习记录，去题库开始第一题吧</text>
+        </view>
+
+        <view wx:else class="col gap-3">
+          <view class="g-card bank-card" wx:for="{{hotBanks}}" wx:key="id" bindtap="goBank" data-id="{{item.id}}">
+            <view class="row bank-row gap-3">
+              <view class="bank-icon" style="background: {{item.iconBg}};">
+                <text class="bank-icon-emoji">{{item.emoji}}</text>
+              </view>
+              <view class="grow">
+                <view class="row between bank-name-row">
+                  <text class="bank-name">{{item.name}}</text>
+                  <text wx:if="{{item.done}}" class="bank-done">✅</text>
+                </view>
+                <text wx:if="{{item.desc}}" class="bank-desc">{{item.desc}}</text>
+                <view class="row wrap gap-2 bank-tags">
+                  <text class="g-tag {{item.typeClass}}">{{item.typeName}}</text>
+                  <text class="g-tag bank-tag2">▦ {{item.total}}题</text>
+                  <text wx:if="{{item.difficulty}}" class="g-tag bank-tag2 {{item.diffClass}}">🔥 {{item.difficulty}}</text>
+                </view>
+                <view class="row gap-3 bank-progress">
+                  <view class="grow progress-bar">
+                    <view class="progress-fill" style="width: {{item.pct}}%;"></view>
+                  </view>
+                  <text class="bank-pct">{{item.pct}}%</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 学习排行榜 -->
+      <view class="section sec-3 fade-up">
+        <view class="row between mb-4">
+          <text class="section-title">学习排行榜</text>
+          <text wx:if="{{myRank}}" class="t-sm c-sub">我的排名 <text class="c-teal t-bold">#{{myRank}}</text></text>
+        </view>
+
+        <view class="g-card rank-card">
+          <view wx:if="{{rankList.length === 0}}" class="rank-empty">
+            <text>暂无排行数据</text>
+          </view>
+          <view class="rank-row {{item.isMe ? 'rank-row-me' : ''}}" wx:for="{{rankList}}" wx:key="id">
+            <text class="rank-no {{item.rankClass}}">{{item.rankNo}}</text>
+            <view class="rank-avatar"><text>{{item.firstChar}}</text></view>
+            <view class="grow rank-info">
+              <text class="rank-name">{{item.name}}<text wx:if="{{item.isMe}}" class="rank-me-tag">(我)</text></text>
+              <text class="rank-sub">正确率 {{item.accuracy}}% · 连续 {{item.streak}} 天</text>
+            </view>
+            <view class="rank-total">
+              <text class="rank-num">{{item.totalAnswered}}</text>
+              <text class="rank-unit"> 题</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+  </block>
+</view>

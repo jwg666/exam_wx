@@ -1,0 +1,172 @@
+/* 题库中心（首页）页面对应 Web 版 pages/index.vue + BankCenter.vue + BankCard.vue */
+
+/* ---------- 页头 ---------- */
+.logo-badge {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 24rpx;
+  background: linear-gradient(135deg, #14B8A6, #2DD4BF);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+  box-shadow: 0 0 40rpx rgba(13, 148, 136, 0.35);
+}
+.page-title {
+  font-size: 44rpx;
+  font-weight: 800;
+  color: #E8EDF5;
+}
+.login-btn {
+  padding: 16rpx 32rpx;
+  font-size: 28rpx;
+  border-radius: 20rpx;
+}
+.btn-hover { opacity: 0.85; }
+.hint-row {
+  padding: 0 40rpx 16rpx;
+}
+
+/* ---------- 搜索栏 ---------- */
+.search-row {
+  padding: 8rpx 40rpx 24rpx;
+}
+.search-box {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background: rgba(11, 17, 32, 0.5);
+  border: 1rpx solid #243049;
+  border-radius: 999rpx;
+  padding: 0 28rpx;
+}
+.search-ico {
+  font-size: 28rpx;
+  margin-right: 16rpx;
+}
+.search-input {
+  flex: 1;
+  height: 80rpx;
+  font-size: 28rpx;
+  color: #E8EDF5;
+}
+
+/* ---------- 分类：每行 4 个大按钮（对齐 Web .cat-tag 加大版） ---------- */
+.cat-grid {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 32rpx 24rpx;
+}
+.cat-cell {
+  width: 25%;
+  box-sizing: border-box;
+  padding: 8rpx;
+}
+.cat-tag {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 22rpx 8rpx;
+  border-radius: 20rpx;
+  background: #162032;
+  color: #94A3B8;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+.cat-tag-active {
+  background: #14B8A6;
+  color: #FFFFFF;
+  font-weight: 700;
+}
+.cat-tag-hover { opacity: 0.85; }
+.cat-txt {
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* ---------- 题库卡片 ---------- */
+.bank-list {
+  padding: 0 40rpx;
+}
+.bank-card {
+  margin-bottom: 24rpx;
+}
+.bank-card-hover { opacity: 0.85; }
+.bank-top {
+  align-items: flex-start;
+}
+.bank-ico {
+  width: 112rpx;
+  height: 112rpx;
+  border-radius: 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48rpx;
+  flex-shrink: 0;
+}
+.bank-info {
+  margin-left: 24rpx;
+}
+.bank-name {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #E8EDF5;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.done-mark {
+  font-size: 28rpx;
+  flex-shrink: 0;
+  margin-left: 12rpx;
+}
+.bank-desc {
+  font-size: 24rpx;
+  color: #94A3B8;
+  margin: 8rpx 0 16rpx;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.bank-tags {
+  margin-bottom: 8rpx;
+}
+.tag-dark {
+  background: #1C2942;
+  color: #94A3B8;
+}
+/* 类型标签配色：对齐 Web main.css .type-* */
+.type-exam { background: rgba(239, 68, 68, 0.12); color: #F87171; }
+.type-skill { background: rgba(13, 148, 136, 0.12); color: #2DD4BF; }
+.type-license { background: rgba(251, 146, 60, 0.12); color: #FDBA74; }
+.type-language { background: rgba(168, 85, 247, 0.12); color: #C084FC; }
+.type-interest { background: rgba(34, 197, 94, 0.12); color: #4ADE80; }
+.type-assess { background: rgba(139, 92, 246, 0.12); color: #C4B5FD; }
+/* 难度配色：对齐 Web BankCard diffColorClass */
+.diff-green { color: #4ADE80; }
+.diff-amber { color: #FBBF24; }
+.diff-red { color: #F87171; }
+.diff-gray { color: #9CA3AF; }
+
+/* ---------- 进度条行 ---------- */
+.prog-row {
+  margin-top: 8rpx;
+}
+.prog-pct {
+  font-size: 24rpx;
+  font-weight: 700;
+  color: #14B8A6;
+  flex-shrink: 0;
+}
+
+/* ---------- 失败重试 ---------- */
+.retry-link {
+  margin-top: 16rpx;
+  color: #14B8A6;
+  font-size: 26rpx;
+}

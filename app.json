@@ -1,0 +1,58 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/results/results",
+    "pages/profile/profile",
+    "pages/login/login",
+    "pages/bank/detail",
+    "pages/quiz/quiz",
+    "pages/result/result",
+    "pages/wrong/wrong",
+    "pages/favorites/favorites",
+    "pages/history/history",
+    "pages/stats/stats",
+    "pages/achievements/achievements",
+    "pages/notifications/notifications",
+    "pages/admin/admin"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#0B1120",
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "题海拾贝",
+    "backgroundColor": "#0B1120",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#64748B",
+    "selectedColor": "#14B8A6",
+    "backgroundColor": "#0B1120",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "assets/tab/home.png",
+        "selectedIconPath": "assets/tab/home-active.png"
+      },
+      {
+        "pagePath": "pages/results/results",
+        "text": "成果",
+        "iconPath": "assets/tab/medal.png",
+        "selectedIconPath": "assets/tab/medal-active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "assets/tab/user.png",
+        "selectedIconPath": "assets/tab/user-active.png"
+      }
+    ]
+  },
+  "usingComponents": {
+    "report-iq": "/components/report-iq/report-iq",
+    "report-mbti": "/components/report-mbti/report-mbti"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

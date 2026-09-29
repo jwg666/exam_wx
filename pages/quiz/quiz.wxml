@@ -1,0 +1,115 @@
+<view class="page quiz-page" wx:if="{{cur}}">
+
+  <!-- 顶部导航 -->
+  <view class="quiz-header">
+    <view class="row gap-3">
+      <view class="quiz-icon-btn" bindtap="onBack">✕</view>
+      <view class="col">
+        <text class="quiz-mode">{{headerLabel}}</text>
+        <view class="quiz-count">
+          <text class="quiz-count-cur">{{curNum}}</text>
+          <text class="quiz-count-total"> / {{total}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="row gap-2">
+      <view class="quiz-timer"><text>⏱️</text><text>{{timeText}}</text></view>
+      <view class="quiz-icon-btn" bindtap="onOpenSheet">▦</view>
+    </view>
+  </view>
+
+  <!-- 顶部细进度条 -->
+  <view class="quiz-progress">
+    <view class="quiz-progress-fill" style="width: {{progressPct}}%;"></view>
+  </view>
+
+  <!-- 题目内容 -->
+  <view class="quiz-body">
+    <view class="fade-up">
+      <view class="quiz-q-head">
+        <text class="quiz-type-tag {{cur.typeClass}}">{{cur.typeLabel}}</text>
+        <text class="quiz-q-text">{{cur.q}}</text>
+      </view>
+      <text wx:if="{{cur.isMulti}}" class="quiz-multi-hint">多选题：选出所有正确选项</text>
+    </view>
+
+    <!-- 选项列表 -->
+    <view class="quiz-opts fade-up">
+      <view
+        wx:for="{{cur.opts}}"
+        wx:key="letter"
+        class="quiz-option {{item.state}}"
+        data-idx="{{index}}"
+        bindtap="onSelectOption"
+      >
+        <view class="opt-label">{{item.letter}}</view>
+        <text class="opt-text">{{item.text}}</text>
+        <text wx:if="{{item.ok}}" class="opt-icon">✅</text>
+        <text wx:if="{{item.no}}" class="opt-icon">❌</text>
+      </view>
+    </view>
+
+    <!-- 解析（practice 已答后） -->
+    <view wx:if="{{showExp}}" class="quiz-exp fade-up {{isCorrect ? 'exp-ok' : 'exp-bad'}}">
+      <view class="quiz-exp-top">
+        <text class="quiz-exp-title">💡 答案解析</text>
+        <text class="quiz-exp-verdict {{isCorrect ? 'c-green' : 'c-red'}}">{{isCorrect ? '回答正确' : '回答错误'}}</text>
+      </view>
+      <view class="quiz-exp-body">
+        <text>正确答案：</text><text class="quiz-exp-ans">{{cur.ansText}}</text><text>。{{cur.exp}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="quiz-footer">
+    <view wx:if="{{showFav}}" class="quiz-square-btn {{isFav ? 'fav-on' : ''}}" bindtap="onToggleFav">⭐</view>
+    <view class="quiz-square-btn {{isFlagged ? 'flag-on' : ''}}" bindtap="onToggleFlag">🚩</view>
+
+    <button
+      wx:if="{{showSubmit}}"
+      class="g-btn g-btn-primary quiz-main-btn {{submitDisabled ? 'g-btn-disabled' : ''}}"
+      disabled="{{submitDisabled}}"
+      bindtap="onSubmitAnswer"
+    >{{submitLabel}}<text class="btn-ic">📤</text></button>
+
+    <view wx:if="{{showNav}}" class="quiz-nav-group">
+      <button
+        class="g-btn g-btn-ghost quiz-nav-btn {{prevDisabled ? 'g-btn-disabled' : ''}}"
+        disabled="{{prevDisabled}}"
+        bindtap="onPrev"
+      >‹ 上一题</button>
+      <button
+        wx:if="{{showNext}}"
+        class="g-btn g-btn-primary quiz-nav-btn"
+        bindtap="onNextTap"
+      >{{nextLabel}}<text class="btn-ic">{{nextIcon}}</text></button>
+    </view>
+  </view>
+
+  <!-- 答题卡底部弹层 -->
+  <view wx:if="{{showSheet}}" class="modal-overlay" bindtap="onCloseSheet">
+    <view class="sheet" catchtap="noop">
+      <view class="sheet-grip"></view>
+      <view class="sheet-head">
+        <text class="sheet-title">答题卡</text>
+        <view class="sheet-legend">
+          <view class="lg-item"><view class="lg-dot lg-current"></view><text>当前</text></view>
+          <view class="lg-item"><view class="lg-dot lg-undone"></view><text>未答</text></view>
+          <view class="lg-item"><view class="lg-dot lg-flag"></view><text>标记</text></view>
+        </view>
+      </view>
+      <view class="grid-box">
+        <view
+          wx:for="{{grid}}"
+          wx:key="num"
+          class="{{item.cls}}"
+          data-idx="{{index}}"
+          bindtap="onGridTap"
+        >{{item.num}}</view>
+      </view>
+      <button class="g-btn g-btn-primary sheet-submit" bindtap="onFinish">📋 交卷</button>
+    </view>
+  </view>
+
+</view>

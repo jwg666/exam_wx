@@ -1,0 +1,65 @@
+<view class="page result-page" wx:if="{{ready}}">
+
+  <!-- 头部：标题 + 环形进度 + 评语 + 统计卡 -->
+  <view class="result-hero">
+    <view class="deco deco-a"></view>
+    <view class="deco deco-b"></view>
+
+    <text class="result-title">{{pageTitle}}</text>
+    <text class="result-sub">{{subTitle}}</text>
+
+    <view class="ring-box">
+      <canvas type="2d" id="ringCanvas" class="ring-canvas" disable-scroll="true"></canvas>
+      <view class="ring-center">
+        <text class="ring-num {{centerSmall ? 'ring-num-small' : ''}}">{{centerText}}</text>
+        <text class="ring-label">{{centerLabel}}</text>
+      </view>
+    </view>
+
+    <text class="result-comment">{{comment}}</text>
+
+    <!-- 统计卡：非 MBTI 三张（正确/错误/用时），MBTI 两张（题目数/用时） -->
+    <view wx:if="{{!isMbti}}" class="result-stats">
+      <view class="stat-card">
+        <text class="stat-label">✅ 正确</text>
+        <text class="stat-value c-green">{{correct}}</text>
+      </view>
+      <view class="stat-card">
+        <text class="stat-label">❌ 错误</text>
+        <text class="stat-value c-red">{{wrong}}</text>
+      </view>
+      <view class="stat-card">
+        <text class="stat-label">⏱️ 用时</text>
+        <text class="stat-value-time c-blue">{{elapsedText}}</text>
+      </view>
+    </view>
+    <view wx:else class="result-stats">
+      <view class="stat-card">
+        <text class="stat-label">📋 题目数</text>
+        <text class="stat-value c-purple">{{total}}</text>
+      </view>
+      <view class="stat-card">
+        <text class="stat-label">⏱️ 用时</text>
+        <text class="stat-value-time c-blue">{{elapsedText}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- MBTI 报告 -->
+  <view wx:if="{{isMbti}}" class="result-report">
+    <report-mbti report="{{report}}"></report-mbti>
+  </view>
+
+  <!-- IQ 报告 -->
+  <view wx:elif="{{isIq}}" class="result-report">
+    <report-iq report="{{report}}"></report-iq>
+  </view>
+
+  <!-- 底部按钮 -->
+  <view class="result-btns">
+    <button class="g-btn g-btn-ghost grow" bindtap="onGoBank">返回题库</button>
+    <button wx:if="{{!hasReport}}" class="g-btn g-btn-primary grow" bindtap="onGoWrong">查看错题<text class="btn-ic">›</text></button>
+    <button wx:else class="g-btn g-btn-primary grow" bindtap="onGoHome">返回首页<text class="btn-ic">›</text></button>
+  </view>
+
+</view>

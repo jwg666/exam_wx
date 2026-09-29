@@ -1,0 +1,58 @@
+<view class="page ach-page">
+
+  <!-- 未登录空态（登录守卫触发） -->
+  <view wx:if="{{guest}}" class="empty">
+    <text class="empty-emoji">🔐</text>
+    <text>登录后查看你的成就</text>
+  </view>
+
+  <block wx:else>
+    <!-- 加载中 -->
+    <view wx:if="{{loading}}" class="loading-wrap">
+      <view class="spinner"></view>
+    </view>
+
+    <block wx:else>
+      <!-- 解锁计数 -->
+      <view class="ach-top">
+        <text class="t-sm c-sub">已解锁 <text class="c-amber t-bold">{{unlockedCount}}</text>/{{total}}</text>
+      </view>
+
+      <!-- 收集进度 -->
+      <view class="g-card ach-progress fade-up">
+        <view class="ach-trophy"><text>🏆</text></view>
+        <view class="grow">
+          <view class="row between ach-progress-head">
+            <text class="t-xs t-bold">收集进度</text>
+            <text class="t-xs t-bold ach-pct">{{pct}}%</text>
+          </view>
+          <view class="progress-bar ach-bar">
+            <view class="progress-fill ach-fill" style="width: {{pct}}%;"></view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 徽章墙 -->
+      <view class="ach-grid">
+        <view
+          class="g-card ach-card {{item.unlocked ? 'ach-on' : 'ach-off'}} fade-up"
+          wx:for="{{list}}"
+          wx:key="id"
+          style="animation-delay: {{item.delay}}s;"
+        >
+          <view wx:if="{{item.unlocked}}" class="ach-glow"></view>
+
+          <view class="ach-chip" style="{{item.chipStyle}}">
+            <text class="ach-emoji">{{item.emoji}}</text>
+          </view>
+
+          <text class="ach-name {{item.unlocked ? '' : 'ach-name-off'}}">{{item.name}}</text>
+          <text class="ach-desc">{{item.desc}}</text>
+          <text wx:if="{{item.unlockedAtText}}" class="ach-date">{{item.unlockedAtText}}</text>
+
+          <text wx:if="{{item.unlocked}}" class="ach-check">✅</text>
+        </view>
+      </view>
+    </block>
+  </block>
+</view>

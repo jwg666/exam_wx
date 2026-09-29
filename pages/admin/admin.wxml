@@ -1,0 +1,167 @@
+<!-- 题库管理后台（迁移自 Web 版 pages/admin.vue） -->
+<view class="page">
+  <!-- 无管理员权限空态 -->
+  <view wx:if="{{denied}}" class="empty">
+    <text class="empty-emoji">⛔</text>
+    <text>无管理员权限</text>
+  </view>
+
+  <block wx:else>
+    <!-- 头部：分类 / 新建 -->
+    <view class="page-header">
+      <view class="row gap-2">
+        <text class="header-emoji">🛡️</text>
+        <text class="t-xl t-black">题库管理</text>
+      </view>
+      <view class="row gap-4">
+        <view class="header-btn" bindtap="openCategories">🔖 分类</view>
+        <view class="header-btn header-btn-primary" bindtap="openCreateBank">➕ 新建</view>
+      </view>
+    </view>
+
+    <!-- 加载态 -->
+    <view wx:if="{{loading}}" class="loading-box">
+      <view class="spinner"></view>
+    </view>
+
+    <!-- 题库列表 -->
+    <block wx:else>
+      <view class="bank-list">
+        <view wx:for="{{banks}}" wx:key="id" class="g-card bank-card">
+          <view class="bank-icon" style="background: {{item.color}}22;">
+            <text>📖</text>
+          </view>
+          <view class="grow">
+            <view class="bank-name">{{item.name}}</view>
+            <view class="bank-meta">{{item.typeLabel}} · {{item.difficulty}} · <text class="c-teal t-bold">{{item.count}}</text> 题</view>
+          </view>
+          <view class="g-tag {{item.isAssessment ? 'kind-assess' : 'kind-quiz'}}">{{item.kind}}</view>
+          <view class="row gap-1">
+            <view class="icon-btn" bindtap="openManage" data-id="{{item.id}}">📋</view>
+            <view class="icon-btn" bindtap="openEditBank" data-id="{{item.id}}">✏️</view>
+            <view class="icon-btn" bindtap="deleteBank" data-id="{{item.id}}">🗑️</view>
+          </view>
+        </view>
+      </view>
+      <view wx:if="{{banks.length === 0}}" class="empty">
+        <text class="empty-emoji">📭</text>
+        <text>暂无题库，点击右上角「新建」</text>
+      </view>
+    </block>
+  </block>
+
+  <!-- 新建/编辑题库弹层 -->
+  <view wx:if="{{showBankForm}}" class="modal-overlay" bindtap="closeBankForm">
+    <view class="sheet" catchtap="noop">
+      <view class="sheet-grip"></view>
+      <view class="t-lg t-black mb-4">{{editingBank ? '编辑题库' : '新建题库'}}</view>
+      <input class="g-input mb-3" value="{{bankForm.id}}" bindinput="onBankFormInput" data-field="id" placeholder="题库 ID（小写字母/数字，如 vue3）" placeholder-class="g-ph" maxlength="-1" disabled="{{editingBank}}" />
+      <view wx:if="{{editingBank}}" class="t-xs c-muted mb-3">题库 ID 创建后不可修改</view>
+      <input class="g-input mb-3" value="{{bankForm.name}}" bindinput="onBankFormInput" data-field="name" placeholder="题库名称" placeholder-class="g-ph" maxlength="-1" />
+      <view class="row gap-3 mb-3">
+        <picker class="grow picker-item" mode="selector" range="{{catNames}}" bindchange="onBankTypePick">
+          <view class="g-input picker-view {{bankForm.typeName ? '' : 'c-muted'}}">{{bankForm.typeName ? bankForm.typeName : '选择分类'}}</view>
+        </picker>
+        <picker class="grow picker-item" mode="selector" range="{{difficulties}}" bindchange="onBankDiffPick">
+          <view class="g-input picker-view">{{bankForm.difficulty}}</view>
+        </picker>
+      </view>
+      <textarea class="g-input form-textarea" value="{{bankForm.description}}" bindinput="onBankFormInput" data-field="description" placeholder="题库简介" placeholder-class="g-ph" maxlength="-1" auto-height></textarea>
+      <view class="row gap-3 mt-4">
+        <button class="g-btn g-btn-ghost grow" bindtap="closeBankForm">取消</button>
+        <button class="g-btn g-btn-primary grow" bindtap="submitBank">{{editingBank ? '保存' : '创建'}}</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 题目管理弹层 -->
+  <view wx:if="{{showManage}}" class="modal-overlay" bindtap="closeManage">
+    <view class="sheet" catchtap="noop">
+      <view class="sheet-grip"></view>
+      <view class="row between mb-1">
+        <view class="manage-title">{{manageName}} · 题目管理</view>
+        <view class="add-q-btn" bindtap="openAddQuestion">➕ 加题</view>
+      </view>
+      <view class="t-xs c-muted mb-3">共 {{manageCount}} 题 · 点击题目可编辑</view>
+      <view wx:if="{{loadingQuestions}}" class="loading-box">
+        <view class="spinner"></view>
+      </view>
+      <block wx:else>
+        <view class="q-list">
+          <view wx:for="{{questions}}" wx:key="id" class="q-row" bindtap="openEditQuestion" data-qid="{{item.id}}">
+            <text class="q-idx">{{item.idx}}</text>
+            <view class="grow">
+              <view class="q-text">{{item.q}}</view>
+              <view class="t-xs c-muted mt-1">{{item.typeLabel}} · 正确答案：<text class="c-teal t-bold">{{item.ansText}}</text></view>
+            </view>
+            <view class="icon-btn icon-btn-sm" catchtap="deleteQuestion" data-qid="{{item.id}}">🗑️</view>
+          </view>
+        </view>
+        <view wx:if="{{questions.length === 0}}" class="empty empty-sm">
+          <text class="empty-emoji">📭</text>
+          <text>暂无题目，点击右上角「加题」</text>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 新增/编辑题目弹层 -->
+  <view wx:if="{{showQuestion}}" class="modal-overlay" bindtap="closeQuestion">
+    <view class="sheet" catchtap="noop">
+      <view class="sheet-grip"></view>
+      <view class="t-lg t-black mb-3">{{editingQuestionId > 0 ? '编辑题目' : '添加题目'}}</view>
+      <view class="row gap-2 mb-3">
+        <view wx:for="{{qTypes}}" wx:key="k" class="type-tag {{qForm.type === item.k ? 'on' : ''}}" bindtap="setType" data-type="{{item.k}}">{{item.label}}</view>
+      </view>
+      <textarea class="g-input form-textarea mb-3" value="{{qForm.content}}" bindinput="onQFormInput" data-field="content" placeholder="题干内容" placeholder-class="g-ph" maxlength="-1" auto-height></textarea>
+      <view class="opt-list">
+        <view wx:for="{{qOpts}}" wx:key="i" class="row gap-2 mb-2">
+          <view class="ans-letter {{qAnsMarks[index] ? 'on' : ''}}" bindtap="toggleAns" data-idx="{{index}}">{{letters[index]}}</view>
+          <input class="g-input fit" value="{{item.v}}" bindinput="onOptInput" data-idx="{{index}}" placeholder="选项 {{letters[index]}}" placeholder-class="g-ph" maxlength="-1" disabled="{{qForm.type === 'judge'}}" />
+        </view>
+      </view>
+      <textarea class="g-input form-textarea" value="{{qForm.explanation}}" bindinput="onQFormInput" data-field="explanation" placeholder="答案解析（选填）" placeholder-class="g-ph" maxlength="-1" auto-height></textarea>
+      <view class="row gap-3 mt-4">
+        <button class="g-btn g-btn-ghost grow" bindtap="closeQuestion">取消</button>
+        <button class="g-btn g-btn-primary grow" bindtap="saveQuestion">保存题目</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 分类管理弹层 -->
+  <view wx:if="{{showCats}}" class="modal-overlay" bindtap="closeCategories">
+    <view class="sheet" catchtap="noop">
+      <view class="sheet-grip"></view>
+      <view class="t-lg t-black mb-3">分类管理</view>
+      <view class="cat-list">
+        <view wx:for="{{cats}}" wx:key="id" class="cat-card">
+          <view class="row gap-2">
+            <text class="cat-code">{{item.code}}</text>
+            <input class="g-input fit input-sm" value="{{item.name}}" bindinput="onCatInput" data-idx="{{index}}" data-field="name" maxlength="20" placeholder="分类名称" placeholder-class="g-ph" />
+            <view class="cat-save" bindtap="saveCategory" data-idx="{{index}}">保存</view>
+          </view>
+          <view class="row gap-2 mt-2">
+            <input class="g-input input-sm w-sort" type="number" value="{{item.sort}}" bindinput="onCatInput" data-idx="{{index}}" data-field="sort" placeholder="排序" placeholder-class="g-ph" />
+            <view class="icon-btn icon-btn-sm" bindtap="deleteCategory" data-idx="{{index}}">🗑️</view>
+          </view>
+        </view>
+        <view wx:if="{{cats.length === 0}}" class="empty empty-sm">
+          <text>暂无分类</text>
+        </view>
+      </view>
+
+      <view class="divider"></view>
+      <view class="t-sm t-bold c-sub mb-2">新增分类</view>
+      <view class="row gap-2 mb-2">
+        <input class="g-input fit input-sm" value="{{newCat.code}}" bindinput="onNewCatInput" data-field="code" placeholder="编码（如 music）" placeholder-class="g-ph" />
+        <input class="g-input input-sm w-sort" type="number" value="{{newCat.sort}}" bindinput="onNewCatInput" data-field="sort" placeholder="排序" placeholder-class="g-ph" />
+      </view>
+      <view class="row gap-2">
+        <input class="g-input fit input-sm" value="{{newCat.name}}" bindinput="onNewCatInput" data-field="name" maxlength="20" placeholder="名称（如 音乐类）" placeholder-class="g-ph" />
+        <view class="cat-save cat-save-lg" bindtap="createCategory">添加</view>
+      </view>
+      <view class="t-xs c-muted mt-2">编码创建后不可修改；有题库的分类无法删除</view>
+      <button class="g-btn g-btn-ghost mt-4" bindtap="closeCategories">完成</button>
+    </view>
+  </view>
+</view>

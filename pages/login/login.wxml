@@ -1,0 +1,89 @@
+<view class="login-page">
+  <!-- 背景光斑 + 上浮粒子（还原 Web login-bg 氛围） -->
+  <view class="login-bg">
+    <view class="blob blob-teal"></view>
+    <view class="blob blob-blue"></view>
+    <view class="blob blob-purple"></view>
+    <view class="particle p-teal"></view>
+    <view class="particle p-blue"></view>
+    <view class="particle p-purple"></view>
+  </view>
+
+  <view class="content">
+    <!-- 品牌区 -->
+    <view class="brand fade-up">
+      <view class="brand-icon"><text>🌊</text></view>
+      <text class="brand-title">题海拾贝</text>
+      <text class="brand-sub">每天进步一点点，知识海洋任你游</text>
+    </view>
+
+    <view class="auth-card fade-up">
+      <!-- 登录 -->
+      <block wx:if="{{isLoginMode}}">
+        <!-- 登录方式切换 -->
+        <view class="seg mb-4">
+          <view class="seg-item {{authMode === 'password' ? 'seg-active' : ''}}" bindtap="switchAuthMode" data-mode="password"><text>密码登录</text></view>
+          <view class="seg-item {{authMode === 'sms' ? 'seg-active' : ''}}" bindtap="switchAuthMode" data-mode="sms"><text>验证码登录</text></view>
+        </view>
+
+        <view class="field">
+          <text class="field-ico">📱</text>
+          <input class="g-input field-input" type="number" maxlength="11" placeholder="请输入手机号" placeholder-class="g-ph" value="{{phone}}" bindinput="onPhoneInput" confirm-type="done" bindconfirm="handleLogin" />
+        </view>
+
+        <!-- 密码登录 -->
+        <view class="field" wx:if="{{authMode === 'password'}}">
+          <text class="field-ico">🔒</text>
+          <input class="g-input field-input field-input-eye" password="{{!isPasswordVisible}}" placeholder="请输入密码" placeholder-class="g-ph" value="{{password}}" bindinput="onPasswordInput" confirm-type="done" bindconfirm="handleLogin" />
+          <text class="field-eye" bindtap="togglePasswordVisible">{{isPasswordVisible ? '🙈' : '👀'}}</text>
+        </view>
+
+        <!-- 验证码登录 -->
+        <view class="code-row" wx:else>
+          <view class="field code-field">
+            <text class="field-ico">🛡️</text>
+            <input class="g-input field-input" type="number" maxlength="6" placeholder="请输入验证码" placeholder-class="g-ph" value="{{code}}" bindinput="onCodeInput" confirm-type="done" bindconfirm="handleLogin" />
+          </view>
+          <view class="send-btn {{countdown > 0 ? 'send-btn-disabled' : ''}}" bindtap="sendCode">
+            <text>{{countdown > 0 ? countdown + 's' : '获取验证码'}}</text>
+          </view>
+        </view>
+
+        <button class="g-btn g-btn-primary submit-btn" disabled="{{submitting}}" bindtap="handleLogin">{{submitting ? '登录中…' : '登录'}}</button>
+
+        <view class="switch-row"><text class="switch-txt" bindtap="toggleMode">还没有账号？去注册</text></view>
+      </block>
+
+      <!-- 注册 -->
+      <block wx:else>
+        <view class="field">
+          <text class="field-ico">👤</text>
+          <input class="g-input field-input" type="text" maxlength="20" placeholder="昵称（选填，默认使用手机号）" placeholder-class="g-ph" value="{{name}}" bindinput="onNameInput" />
+        </view>
+
+        <view class="field">
+          <text class="field-ico">📱</text>
+          <input class="g-input field-input" type="number" maxlength="11" placeholder="请输入手机号" placeholder-class="g-ph" value="{{phone}}" bindinput="onPhoneInput" />
+        </view>
+
+        <view class="code-row">
+          <view class="field code-field">
+            <text class="field-ico">🛡️</text>
+            <input class="g-input field-input" type="number" maxlength="6" placeholder="请输入验证码" placeholder-class="g-ph" value="{{code}}" bindinput="onCodeInput" confirm-type="done" bindconfirm="handleRegister" />
+          </view>
+          <view class="send-btn {{countdown > 0 ? 'send-btn-disabled' : ''}}" bindtap="sendCode">
+            <text>{{countdown > 0 ? countdown + 's' : '获取验证码'}}</text>
+          </view>
+        </view>
+
+        <button class="g-btn g-btn-primary submit-btn" disabled="{{submitting}}" bindtap="handleRegister">{{submitting ? '注册中…' : '注册'}}</button>
+
+        <view class="switch-row"><text class="switch-txt" bindtap="toggleMode">已有账号？去登录</text></view>
+      </block>
+    </view>
+
+    <view class="agreement">
+      <text>登录即代表同意 </text><text class="agree-link">用户协议</text><text> 与 </text><text class="agree-link">隐私政策</text>
+    </view>
+  </view>
+</view>

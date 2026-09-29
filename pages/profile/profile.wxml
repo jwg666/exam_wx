@@ -1,0 +1,224 @@
+<view class="page px-5 pb-8 safe-bottom">
+  <!-- 已登录：个人中心主体 -->
+  <block wx:if="{{user}}">
+    <!-- 用户卡：头像 / 昵称(可编辑) / 脱敏手机号 / 消息铃铛 -->
+    <view class="row gap-4 mt-4 fade-up">
+      <view class="avatar-wrap">
+        <image wx:if="{{!avatarFailed}}" class="avatar-img" src="{{user.avatar}}" mode="aspectFill" binderror="onAvatarError" />
+        <view wx:else class="avatar-fallback avatar-img">{{nameInitial}}</view>
+        <view class="online-dot"></view>
+      </view>
+      <view class="col grow min-w-0">
+        <view class="row gap-2 mb-1" wx:if="{{!editing}}">
+          <text class="name-text">{{user.name}}</text>
+          <text class="edit-btn" bindtap="startEdit">✏️</text>
+        </view>
+        <view class="row gap-2 mb-1" wx:else>
+          <input class="g-input edit-input" value="{{editName}}" maxlength="20" placeholder="请输入昵称" placeholder-class="g-ph" bindinput="onEditNameInput" confirm-type="done" bindconfirm="saveName" />
+          <view class="g-btn g-btn-primary save-btn {{saving ? 'g-btn-disabled' : ''}}" bindtap="saveName"><text>保存</text></view>
+          <view class="cancel-btn" bindtap="cancelEdit"><text>取消</text></view>
+        </view>
+        <view class="phone-tag">
+          <text class="phone-ico">📱</text>
+          <text>{{maskedPhone}}</text>
+        </view>
+      </view>
+      <view class="bell-btn" bindtap="go" data-url="/pages/notifications/notifications">
+        <text class="bell-ico">🔔</text>
+        <view wx:if="{{unreadCount > 0}}" class="bell-dot"></view>
+      </view>
+    </view>
+
+    <!-- 数据概览面板：累计答题 / 今日打卡 / 正确率 / 成就 / 连续打卡 / 本周打卡 -->
+    <view class="ov-card fade-up" style="animation-delay:0.05s;">
+      <view class="ov-glow ov-glow-r"></view>
+      <view class="ov-glow ov-glow-l"></view>
+      <view class="row between relative mb-5">
+        <view class="col">
+          <text class="ov-label">累计答题</text>
+          <view class="row baseline gap-2">
+            <text class="ov-num">{{user.totalAnswered}}</text>
+            <text class="ov-unit">道</text>
+          </view>
+        </view>
+        <view class="g-btn g-btn-primary checkin-btn {{checkedToday ? 'checkin-done' : ''}} {{checkingIn ? 'g-btn-disabled' : ''}}" bindtap="onCheckin">
+          <text>{{checkedToday ? '✅ 已打卡' : '📅 今日打卡'}}</text>
+        </view>
+      </view>
+      <view class="row gap-3 relative">
+        <view class="ov-cell grow">
+          <view class="ov-cell-label"><text>🎯</text><text> 正确率</text></view>
+          <text class="ov-cell-val">{{accuracy}}%</text>
+        </view>
+        <view class="ov-cell grow">
+          <view class="ov-cell-label"><text>🏆</text><text> 成就</text></view>
+          <view class="row baseline gap-1">
+            <text class="ov-cell-val">{{unlockedCount}}</text>
+            <text class="ov-unit">个</text>
+          </view>
+        </view>
+        <view class="ov-cell grow">
+          <view class="ov-cell-label"><text>🔥</text><text> 连续打卡</text></view>
+          <view class="row baseline gap-1">
+            <text class="ov-cell-val">{{streak}}</text>
+            <text class="ov-unit">天</text>
+          </view>
+        </view>
+      </view>
+      <view class="week-row relative" wx:if="{{weekDots.length > 0}}">
+        <text class="week-label">本周打卡</text>
+        <view class="week-dots">
+          <view wx:for="{{weekDots}}" wx:key="label" class="week-dot {{item.checked ? 'dot-on' : ''}} {{item.today && !item.checked ? 'dot-today' : ''}}">
+            <text>{{item.label}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 快捷入口 -->
+    <view class="quick-grid fade-up" style="animation-delay:0.1s;">
+      <view class="quick-item" bindtap="go" data-url="/pages/index/index">
+        <view class="quick-ico q-indigo"><text>▦</text></view>
+        <text class="quick-label">全部题库</text>
+      </view>
+      <view class="quick-item" bindtap="go" data-url="/pages/wrong/wrong">
+        <view class="quick-ico q-red">
+          <text>📖</text>
+          <view wx:if="{{wrongCount > 0}}" class="quick-badge">{{wrongCount}}</view>
+        </view>
+        <text class="quick-label">错题本</text>
+      </view>
+      <view class="quick-item" bindtap="go" data-url="/pages/favorites/favorites">
+        <view class="quick-ico q-amber"><text>⭐</text></view>
+        <text class="quick-label">收藏夹</text>
+      </view>
+      <view class="quick-item" bindtap="go" data-url="/pages/stats/stats">
+        <view class="quick-ico q-emerald"><text>📊</text></view>
+        <text class="quick-label">数据分析</text>
+      </view>
+    </view>
+
+    <!-- 功能列表 -->
+    <view class="col gap-3 mb-5 fade-up" style="animation-delay:0.15s;">
+      <view class="menu-card row between" bindtap="go" data-url="/pages/history/history">
+        <view class="row gap-3">
+          <view class="menu-ico m-blue"><text>🕘</text></view>
+          <text class="menu-title">答题历史</text>
+        </view>
+        <view class="row gap-2">
+          <text class="menu-count">{{historyCount}}</text>
+          <text class="menu-arrow">›</text>
+        </view>
+      </view>
+      <view class="menu-card row between" bindtap="go" data-url="/pages/favorites/favorites">
+        <view class="row gap-3">
+          <view class="menu-ico m-amber"><text>⭐</text></view>
+          <text class="menu-title">我的收藏</text>
+        </view>
+        <view class="row gap-2">
+          <text class="menu-count">{{favCount}}</text>
+          <text class="menu-arrow">›</text>
+        </view>
+      </view>
+      <view class="menu-card row between" bindtap="go" data-url="/pages/achievements/achievements">
+        <view class="row gap-3">
+          <view class="menu-ico m-purple"><text>🏅</text></view>
+          <text class="menu-title">我的成就</text>
+        </view>
+        <text class="menu-arrow">›</text>
+      </view>
+      <view class="menu-card row between" bindtap="go" data-url="/pages/notifications/notifications">
+        <view class="row gap-3">
+          <view class="menu-ico m-teal"><text>🔔</text></view>
+          <text class="menu-title">消息通知</text>
+        </view>
+        <view class="row gap-2">
+          <view wx:if="{{unreadCount > 0}}" class="unread-badge">{{unreadCount}}</view>
+          <text class="menu-arrow">›</text>
+        </view>
+      </view>
+      <view wx:if="{{user.isAdmin}}" class="menu-card row between" bindtap="go" data-url="/pages/admin/admin">
+        <view class="row gap-3">
+          <view class="menu-ico m-rose"><text>⚙️</text></view>
+          <text class="menu-title">管理后台</text>
+        </view>
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+
+    <!-- 最近学习 -->
+    <view class="fade-up mb-5" style="animation-delay:0.2s;">
+      <view class="row between mb-3">
+        <text class="section-title-lg">最近学习</text>
+        <text class="link-more" bindtap="go" data-url="/pages/index/index">查看全部 ›</text>
+      </view>
+      <view class="col gap-3" wx:if="{{recentBanks.length > 0}}">
+        <view wx:for="{{recentBanks}}" wx:key="id" class="g-card" bindtap="go" data-url="/pages/bank/detail?id={{item.id}}">
+          <view class="row" style="align-items: flex-start;">
+            <view class="bank-ico" style="background: {{item.bg}};">
+              <text style="color: {{item.color}};">📚</text>
+            </view>
+            <view class="col grow min-w-0">
+              <view class="row between mb-1">
+                <text class="bank-name">{{item.name}}</text>
+                <text wx:if="{{item.completed}}" class="t-sm">✅</text>
+              </view>
+              <text class="bank-desc" wx:if="{{item.desc}}">{{item.desc}}</text>
+              <view class="row wrap gap-1 mb-2">
+                <text class="g-tag tag-type" wx:if="{{item.typeName}}">{{item.typeName}}</text>
+                <text class="g-tag tag-plain">{{item.total}}题</text>
+                <text class="g-tag tag-plain {{item.difficulty === '简单' ? 'c-green' : item.difficulty === '中等' ? 'c-amber' : item.difficulty === '困难' ? 'c-red' : 'c-muted'}}">{{item.difficulty}}</text>
+              </view>
+              <view class="row gap-2">
+                <view class="progress-bar grow"><view class="progress-fill" style="width: {{item.pct}}%;"></view></view>
+                <text class="bank-pct">{{item.pct}}%</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view wx:else class="empty-sm">暂无学习记录，去题库中心逛逛吧</view>
+    </view>
+
+    <!-- 学习排行榜 -->
+    <view class="fade-up mb-5" style="animation-delay:0.25s;">
+      <view class="row between mb-3">
+        <text class="section-title-lg">学习排行榜</text>
+        <text wx:if="{{ranking.myRank > 0}}" class="rank-my">我的排名 <text class="c-teal t-bold">#{{ranking.myRank}}</text></text>
+      </view>
+      <view class="g-card rank-card">
+        <view wx:if="{{ranking.list.length === 0}}" class="rank-empty">暂无排行数据</view>
+        <view wx:for="{{ranking.list}}" wx:key="id" class="rank-row {{item.isMe ? 'rank-me' : ''}}">
+          <text class="rank-no {{index === 0 ? 'no-gold' : index === 1 ? 'no-silver' : index === 2 ? 'no-bronze' : ''}}">{{index + 1}}</text>
+          <view class="rank-avatar"><text>{{item.initial}}</text></view>
+          <view class="col grow min-w-0">
+            <text class="rank-name">{{item.name}}<text wx:if="{{item.isMe}}" class="c-teal t-xs"> (我)</text></text>
+            <text class="rank-sub">正确率 {{item.accuracy}}% · 连续 {{item.streak}} 天</text>
+          </view>
+          <view class="row baseline gap-1">
+            <text class="rank-num">{{item.totalAnswered}}</text>
+            <text class="rank-unit">题</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 退出登录 -->
+    <view class="fade-up" style="animation-delay:0.3s;">
+      <view class="g-btn g-btn-ghost logout-btn" bindtap="onLogout"><text>🚪 退出登录</text></view>
+    </view>
+  </block>
+
+  <!-- 未登录空态（对齐 Web 登录守卫） -->
+  <view wx:elif="{{guest}}" class="empty">
+    <text class="empty-emoji">🔒</text>
+    <text>登录后可查看个人中心</text>
+    <view class="g-btn g-btn-primary guest-btn" bindtap="goLogin"><text>去登录</text></view>
+  </view>
+
+  <!-- 登录中但用户信息尚未恢复 -->
+  <view wx:else class="empty">
+    <text class="empty-emoji">⏳</text>
+    <text>正在加载个人信息…</text>
+  </view>
+</view>
