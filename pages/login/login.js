@@ -146,5 +146,41 @@ Page({
     } finally {
       this.setData({ submitting: false })
     }
+  },
+
+  // ---------- 微信登录 ----------
+  // mock 模式（后端未配置微信密钥）下用设备级稳定随机串充当 openid，便于开发联调；
+  // 真实模式下后端只认 wx.login 的 code，此字段被忽略
+  getMockOpenid() {
+    try {
+      let id = wx.getStorageSync('wx_mock_openid')
+      if (!id) {
+        id = 'dev' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10)
+        wx.setStorageSync('wx_mock_openid', id)
+      }
+      return id
+    } catch (e) {
+      return ''
+    }
+  },
+
+  async handleWxLogin() {
+    if (this.data.submitting) return
+    this.setData({ submitting: true })
+    try {
+      const code = await new Promise((resolve, reject) => {
+        wx.login({ success: (r) => resolve(r.code), fail: reject })
+      })
+      const data = await api.post('/api/auth/wechat/login', {
+        code: code,
+        mockOpenid: this.getMockOpenid()
+      })
+      // 微信登录直接进入；免手机号账号温和提示绑定（不阻断），绑定入口在「我的」页
+      await this.afterAuth(data, data.user && data.user.phone ? '登录成功' : '已用微信登录，建议在「我的」页绑定手机号')
+    } catch (e) {
+      toast.error(e.message || '微信登录失败')
+    } finally {
+      this.setData({ submitting: false })
+    }
   }
 })

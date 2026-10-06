@@ -27,6 +27,11 @@ Page({
     nameInitial: '',
     avatarFailed: false,
     maskedPhone: '',
+    binding: false,        // 绑定手机号表单态
+    bindPhone: '',
+    bindCode: '',
+    bindCountdown: 0,
+    bindSubmitting: false,
     accuracy: 0,
     unlockedCount: 0,
     checkedToday: false,
@@ -56,6 +61,86 @@ Page({
     this.refreshRemote()
   },
 
+  onUnload() {
+    this.stopBindCountdown()
+  },
+
+  // ---------- 绑定手机号（微信免手机号账号的可选操作） ----------
+  startBind() {
+    this.setData({ binding: true, bindPhone: '', bindCode: '' })
+  },
+
+  cancelBind() {
+    this.stopBindCountdown()
+    this.setData({ binding: false, bindPhone: '', bindCode: '' })
+  },
+
+  onBindPhoneInput(e) { this.setData({ bindPhone: e.detail.value }) },
+  onBindCodeInput(e) { this.setData({ bindCode: e.detail.value }) },
+
+  stopBindCountdown() {
+    if (this._bindTimer) {
+      clearInterval(this._bindTimer)
+      this._bindTimer = null
+    }
+  },
+
+  sendBindCode() {
+    const phone = this.data.bindPhone.trim()
+    if (!/^1\d{10}$/.test(phone)) {
+      toast.error('请输入正确的手机号')
+      return
+    }
+    if (this.data.bindCountdown > 0) return
+    api.post('/api/auth/sms/send', { phone }).then((res) => {
+      this.stopBindCountdown()
+      this.setData({ bindCountdown: 60 })
+      this._bindTimer = setInterval(() => {
+        const next = this.data.bindCountdown - 1
+        if (next <= 0) {
+          this.stopBindCountdown()
+          this.setData({ bindCountdown: 0 })
+        } else {
+          this.setData({ bindCountdown: next })
+        }
+      }, 1000)
+      if (res.provider === 'mock') {
+        toast.info('当前为开发模式，验证码请输入 123456')
+      } else {
+        toast.info('验证码已发送，请注意查收短信')
+      }
+    }).catch((e) => {
+      toast.error(e.message || '验证码发送失败')
+    })
+  },
+
+  async saveBind() {
+    const phone = this.data.bindPhone.trim()
+    const code = this.data.bindCode.trim()
+    if (!phone || !code) {
+      toast.error('请输入手机号和验证码')
+      return
+    }
+    if (this.data.bindSubmitting) return
+    this.setData({ bindSubmitting: true })
+    try {
+      const res = await api.post('/api/auth/wechat/bind', { phone: phone, code: code })
+      store.updateUser({ phone: res.user.phone })
+      this.stopBindCountdown()
+      this.setData({
+        binding: false,
+        bindPhone: '',
+        bindCode: '',
+        bindSubmitting: false,
+        maskedPhone: fmt.maskPhone(res.user.phone || '')
+      })
+      toast.success('绑定成功')
+    } catch (e) {
+      toast.error(e.message || '绑定失败')
+      this.setData({ bindSubmitting: false })
+    }
+  },
+
   // ---------- 缓存直出 ----------
   refreshFromCache() {
     const user = store.getUser()
@@ -72,6 +157,7 @@ Page({
     this.setData({
       user: {
         name: user.name || '',
+        phone: user.phone || '',
         avatar: user.avatar || '',
         isAdmin: !!user.isAdmin,
         totalAnswered: user.totalAnswered || 0

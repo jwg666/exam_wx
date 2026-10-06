@@ -77,6 +77,62 @@
 .phone-ico {
   font-size: 22rpx;
 }
+.phone-tag-bind {
+  color: #2DD4BF;
+  border: 1rpx dashed rgba(45, 212, 191, 0.5);
+  background: rgba(20, 184, 166, 0.08);
+}
+
+/* 绑定手机号表单卡 */
+.bind-card {
+  margin-top: 24rpx;
+  background: rgba(22, 32, 50, 0.85);
+  border: 1rpx solid #243049;
+  border-radius: 24rpx;
+  padding: 32rpx;
+}
+.bind-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #E8EDF5;
+}
+.bind-sub {
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  color: #64748B;
+}
+.bind-input {
+  flex: 1;
+  min-width: 0;
+  height: 80rpx;
+  padding: 0 24rpx;
+}
+.bind-send {
+  flex-shrink: 0;
+  height: 80rpx;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  background: #162032;
+  border: 1rpx solid #243049;
+  color: #2DD4BF;
+  font-size: 24rpx;
+  font-weight: 700;
+  padding: 0 24rpx;
+  border-radius: 16rpx;
+  white-space: nowrap;
+}
+.bind-send-disabled {
+  opacity: 0.5;
+}
+.bind-cancel {
+  display: flex;
+  align-items: center;
+  padding: 0 28rpx;
+  height: 80rpx;
+  font-size: 26rpx;
+  color: #64748B;
+}
 .bell-btn {
   position: relative;
   width: 80rpx;

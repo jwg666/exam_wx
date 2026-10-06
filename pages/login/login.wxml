@@ -52,6 +52,9 @@
         <button class="g-btn g-btn-primary submit-btn" disabled="{{submitting}}" bindtap="handleLogin">{{submitting ? '登录中…' : '登录'}}</button>
 
         <view class="switch-row"><text class="switch-txt" bindtap="toggleMode">还没有账号？去注册</text></view>
+
+        <view class="wx-divider"><text>其他登录方式</text></view>
+        <button class="wx-login-btn" disabled="{{submitting}}" bindtap="handleWxLogin">{{submitting ? '登录中…' : '微信一键登录'}}</button>
       </block>
 
       <!-- 注册 -->
